@@ -3,12 +3,9 @@ import R3FScene from "../components/R3FScene";
 
 export default function HomePage() {
   return (
-    <main className="w-full h-screen bg-gray-900 relative">
-      {/* 3D visualization layer */}
-      <R3FScene />
-
-      {/* UI overlay */}
-      <SubnetListPanel />
-    </main>
+    <div className="w-full h-full flex flex-col items-center justify-center text-center">
+      
+    </div>
   );
 }
+

@@ -1,7 +1,17 @@
 from fastapi import FastAPI 
 from bittensor import Subtensor
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
@@ -19,30 +29,27 @@ def root():
 
 #1. GET ALL SUBNETS
 @app.get("/api/subnets")
-def get_all_subnets():
+def get_subnet_names():
     """"
     Calls: Subtensor.get_all_subnets_info()
     Parameters: None
     Returns: List of SubnetInfo objects
     """
 
-    backend_cache = {}
-    if not backend_cache:
-        try:
-            print("Ready to query subnet..")
-            subnets = subtensor.get_all_subnets_info()
-            print("Query processed")
-        except Exception as e:
-            print("Error processing query", e)
+   
+    
+    print("Ready to query subnet..")
+    subnets = subtensor.all_subnets()
+    print("Querry processed")
+        
         
         #subnet_dicts = [subnet.__dict__ for subnet in subnets]
         #I want  only netuid , kappa
-        return {"subnets": subnets[:1]}
-    else:
-        return backend_cache
+    return [subnet.subnet_name for subnet in subnets]
+    
 
 #2. GET TOTAL EMISSIONS
-@app.get("/emissions/total")
+@app.get("/api/emissions")
 def total_emissions():
     """
     Calls: Subtensor.get_total_emission()
